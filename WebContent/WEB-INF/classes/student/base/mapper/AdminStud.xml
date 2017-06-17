@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="student.admin.ebc.AdminStudDAO">
+	<select id="getHakwonList" parameterType="HakwonVo" resultType="HakwonVo">
+		select inter.* from (
+		select @RNUM := @RNUM + 1 AS RNUM,
+		a.hakwon_cd, a.hakwon_nm,a.use_yn
+		 from (
+		select hakwon_cd, hakwon_nm, use_yn 
+			from hakwon
+			where use_yn = 'Y'
+			<if test="hakwon_nm != null and hakwon_nm != ''">
+				and hakwon_nm like '%${hakwon_nm}%'
+			</if>
+		order by hakwon_nm) a,(SELECT @RNUM := 0) b
+		) inter where rnum > #{firstIndex}
+		and rnum <![CDATA[ <= ]]> #{lastIndex}
+	</select>
+	
+	<select id="getHakwonListCnt" parameterType="HakwonVo" resultType="int">
+		select count(*) as cnt 
+			from hakwon
+			where use_yn = 'Y'
+			<if test="hakwon_nm != null and hakwon_nm != ''">
+				and hakwon_nm like '%${hakwon_nm}%'
+			</if>
+	</select>
+	
+
+	<insert id="insertHakwon" parameterType="HakwonVo">
+		INSERT INTO HAKWON 
+		(
+			HAKWON_CD,HAKWON_NM, USE_YN
+		) VALUES 
+		(
+			#{hakwon_cd},#{hakwon_nm},#{use_yn}
+		)
+	</insert>
+	
+	<update id="updateHakwon" parameterType="HakwonVo">
+		UPDATE HAKWON SET
+			HAKWON_NM = #{hakwon_nm}
+		where hakwon_cd = #{hakwon_cd}
+	</update>
+	
+	<delete id="deleteHakwon" parameterType="HakwonVo">
+		UPDATE HAKWON SET
+			USE_YN = #{use_yn}
+		where hakwon_cd = #{hakwon_cd}
+	</delete>
+	
+	<select id="getMaxHakwoncd" resultType="String">
+		select case when max(hakwon_cd) is null then 1 else max(hakwon_cd)+1 end from hakwon
+	</select>
+	
+	<select id="getHakwonDetail" parameterType="HakwonVo"  resultType="HakwonVo">
+		select 
+		a.hakwon_cd, a.hakwon_nm,a.use_yn
+		 from hakwon a
+		 where a.hakwon_cd = #{hakwon_cd}
+		 
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="getStudentList" parameterType="StudentVo" resultType="StudentVo">
+		select inter.* from (
+		select @RNUM := @RNUM + 1 AS RNUM,
+		a.hakwon_cd, a.stud_cd, a.stud_id, a.stud_nm, a.use_yn, a.clinictype,
+		 a.school, a.tel_no, a.ptel_no, a.bigo, a.hakneon
+		 from (
+		select hakwon_cd, stud_cd, stud_id, stud_nm , use_yn , clinictype ,
+			school, tel_no, ptel_no, bigo , hakneon
+			from student
+			where 1=1
+			and hakwon_cd = #{hakwon_cd}
+			<if test="stud_nm != null and stud_nm != ''">
+				and stud_nm like '%${stud_nm}%'
+			</if>
+			<if test="stud_id != null and stud_id != ''">
+				and stud_id = #{stud_id}
+			</if>
+			<if test="use_yn != null and use_yn != ''">
+				and use_yn = #{use_yn}
+			</if>
+			<if test="hakneon != null and hakneon != ''">
+				and hakneon = #{hakneon}
+			</if>
+		order by stud_nm) a,(SELECT @RNUM := 0) b
+		) inter where rnum > #{firstIndex}
+		and rnum <![CDATA[ <= ]]> #{lastIndex}
+	</select>
+	
+	<select id="getStudentListCnt" parameterType="StudentVo" resultType="int">
+		select count(*) as cnt 
+			from student
+			where 1=1
+			and hakwon_cd = #{hakwon_cd}
+			<if test="stud_nm != null and stud_nm != ''">
+				and stud_nm like '%${stud_nm}%'
+			</if>
+			<if test="stud_id != null and stud_id != ''">
+				and stud_id = #{stud_id}
+			</if>
+			<if test="use_yn != null and use_yn != ''">
+				and use_yn = #{use_yn}
+			</if>
+			<if test="hakneon != null and hakneon != ''">
+				and hakneon = #{hakneon}
+			</if>
+	</select>
+	
+
+	<insert id="insertStudent" parameterType="StudentVo">
+		INSERT INTO student 
+		(
+			stud_cd, HAKWON_CD, stud_id, stud_nm, USE_YN, clinictype, school, tel_no, ptel_no, bigo, hakneon
+		) VALUES 
+		(
+			#{stud_cd}, #{hakwon_cd},#{stud_id}, #{stud_nm},#{use_yn}, #{clinictype}, #{school}, #{tel_no}, #{ptel_no}, #{bigo}, #{hakneon}
+		)
+	</insert>
+	
+	<update id="updateStudent" parameterType="StudentVo">
+		UPDATE student SET
+			hakwon_cd = #{hakwon_cd}
+			,stud_id = #{stud_id}
+			,stud_NM = #{stud_nm}
+			,clinictype = #{clinictype}
+			,school = #{school}
+			,tel_no = #{tel_no}
+			,ptel_no = #{ptel_no}
+			,bigo = #{bigo}
+			,hakneon = #{hakneon}
+		where stud_cd = #{stud_cd}
+	</update>
+	
+	
+	<update id="updateStudentClinic" parameterType="StudentVo">
+		UPDATE student SET
+			clinictype = #{clinictype}
+		where stud_cd = #{stud_cd}
+	</update>
+	
+	<delete id="deleteStudent" parameterType="StudentVo">
+		UPDATE student SET
+			USE_YN = #{use_yn}
+		where stud_cd = #{stud_cd}
+	</delete>
+	
+	<select id="getMaxStudcd" resultType="String">
+		select case when max(stud_cd) is null then 1 else max(stud_cd)+1 end from student
+	</select>
+	
+	<select id="getStudentDetail" parameterType="StudentVo"  resultType="StudentVo">
+		select 
+		a.stud_cd,
+		a.hakwon_cd,
+		a.stud_id, 
+		a.stud_nm,
+		a.use_yn,
+		a.clinictype,
+		a.school,
+		a.tel_no,
+		a.ptel_no,
+		a.bigo,
+		a.hakneon
+		 from student a
+		 where a.stud_cd = #{stud_cd}
+	</select>
+	
+   <select id="getStudentStudidCnt" parameterType="StudentVo" resultType="int">
+		select count(*) as cnt 
+			from student
+			where use_yn = 'Y'
+			and stud_id = #{stud_id}
+	</select>
+	
+	
+	
+	<select id="getAdmin" parameterType="AdminVo" resultType="AdminVo">
+		SELECT admin_cd, admin_id, admin_pw, admin_nm 
+		FROM admin 
+		where admin_id = #{admin_id}
+		and admin_pw = #{admin_pw}
+		and use_yn = 'Y'
+    </select>
+    
+    
+    <select id="getStudAnswerStats" parameterType="AnswerVo" resultType="AnswerVo">
+		select a.weekvalue, a.dayvalue, a.questionvalue, sum(rightcnt) as rightcnt,
+		 sum(wrongcnt) as wrongcnt,
+		sum(allcnt) as allcnt,
+		round(sum(rightcnt)/sum(allcnt)*100,1) as rightpercent
+		from (
+		select a.weekvalue, a.dayvalue, a.questionvalue, 
+			case when 
+			a.rightyn = 'Y' then 1
+			else 0 end as rightcnt ,
+			case when 
+			a.rightyn = 'N' then 1
+			else 0 end as wrongcnt,
+			1 as allcnt
+		from answer a, student b
+		where a.stud_cd = b.stud_cd 
+		and b.use_yn = 'Y'
+		<if test="hakwon_cd != null and hakwon_cd != ''">
+			and b.hakwon_cd = #{hakwon_cd}
+		</if>
+		<if test="weekval != null and weekval != ''">
+			and a.weekvalue = #{weekval}
+		</if>
+		<if test="dayvalue != null and dayvalue != ''">
+			and a.dayvalue = #{dayvalue}
+		</if>
+		<if test="hakneon != null and hakneon != ''">
+			and b.hakneon = #{hakneon}
+		</if>
+		) a
+		group by a.weekvalue, a.dayvalue, a.questionvalue
+		order by a.weekvalue, a.dayvalue, a.questionvalue
+    </select>
+    
+    <select id="getStudAnswerSubmitStats" parameterType="AnswerVo" resultType="AnswerVo">
+		SELECT A.HAKWON_CD, A.STUD_CD, A.STUD_ID,A.STUD_NM,A.WEEKVALUE,A.DAYVALUE,
+			       B.WEEKVALUE AS SUBMITCNT FROM 
+				(SELECT A.HAKWON_CD,A.STUD_CD,A.STUD_ID, A.STUD_NM, A.HAKNEON, B.WEEKVALUE, B.DAYVALUE FROM 
+			(select * from STUDENT where use_yn = 'Y') A, (SELECT WEEKVALUE,DAYVALUE FROM ANSWER
+				GROUP BY WEEKVALUE,DAYVALUE) B) A LEFT OUTER JOIN 
+				(SELECT STUD_CD, WEEKVALUE, DAYVALUE FROM ANSWER
+				GROUP BY STUD_CD, WEEKVALUE, DAYVALUE) B
+				ON A.STUD_CD = B.STUD_CD
+				AND A.WEEKVALUE = B.WEEKVALUE
+				AND A.DAYVALUE = B.DAYVALUE
+			WHERE A.HAKWON_CD = #{hakwon_cd}
+			<if test="weekval != null and weekval != ''">
+			and A.weekvalue = #{weekval}
+			</if>
+			<if test="dayvalue != null and dayvalue != ''">
+			and A.dayvalue = #{dayvalue}
+			</if>
+			<if test="hakneon != null and hakneon != ''">
+			and A.hakneon = #{hakneon}
+			</if>
+			ORDER BY A.WEEKVALUE,A.DAYVALUE,A.STUD_NM
+    </select>
+    
+    
+    <select id="getStudAnswerWrongStats" parameterType="AnswerVo" resultType="AnswerVo">
+		select a.stud_id, a.stud_nm, a.stud_cd,
+		 (select hakwon_nm from hakwon inter where inter.hakwon_cd = a.hakwon_cd) as hakwon_nm,
+		 a.hakneon,
+		 sum(rightcnt) as rightcnt,
+		 sum(wrongcnt) as wrongcnt,
+		sum(allcnt) as allcnt
+		from (
+		select a.weekvalue, a.dayvalue, 
+			b.stud_id, b.stud_nm,b.hakwon_cd,b.stud_cd,
+			case when 
+			a.rightyn = 'Y' then 1
+			else 0 end as rightcnt ,
+			case when 
+			a.rightyn = 'N' then 1
+			else 0 end as wrongcnt,
+			1 as allcnt,
+			b.hakneon
+		from answer a, student b
+		where a.stud_cd = b.stud_cd 
+		and b.use_yn = 'Y'
+		and b.hakwon_cd = #{hakwon_cd}
+		<if test="weekval != null and weekval != ''">
+		and a.weekvalue <![CDATA[ >= ]]>  #{weekval}
+		</if>
+		<if test="weekvalto != null and weekvalto != ''">
+		and a.weekvalue <![CDATA[ <= ]]>  #{weekvalto}
+		</if>
+		
+		<if test="dayvalue != null and dayvalue != ''">
+		and a.dayvalue = #{dayvalue}
+		</if>
+		<if test="hakneon != null and hakneon != ''">
+		and b.hakneon = #{hakneon}
+		</if>
+		) a
+		group by a.hakwon_cd, a.stud_cd, a.stud_id, a.stud_nm, a.hakneon
+		order by a.hakwon_cd, a.hakneon, a.stud_nm
+    </select>
+    
+    
+    <select id="getStudAnswerWrongList" parameterType="AnswerVo" resultType="AnswerVo">
+		select a.weekvalue, a.dayvalue, a.questionvalue,
+			b.stud_cd, b.stud_id, b.stud_nm, c.hakwon_nm, b.hakneon
+		from answer a, student b , hakwon c
+		where a.stud_cd = b.stud_cd 
+		and b.hakwon_cd = c.hakwon_cd
+		and b.use_yn = 'Y'
+		<if test="hakwon_cd != null and hakwon_cd != ''">
+		and b.hakwon_cd = #{hakwon_cd}
+		</if>
+		<if test="weekval != null and weekval != ''">
+		and a.weekvalue <![CDATA[ >= ]]> #{weekval}
+		</if>
+		<if test="weekvalto != null and weekvalto != ''">
+		and a.weekvalue <![CDATA[ <= ]]>  #{weekvalto}
+		</if>
+		<if test="stud_cd != null and stud_cd != ''">
+		and a.stud_cd = #{stud_cd}
+		</if>
+		and a.rightyn = 'N'
+		order by b.stud_nm, a.weekvalue, a.dayvalue,a.questionvalue
+    </select>
+    
+    
+    
+    
+    
+    <select id="getBbsInfoList" parameterType="BbsInfoVo" resultType="BbsInfoVo">
+		select inter.* from (
+		select @RNUM := @RNUM + 1 AS RNUM,
+		a.bbs_id, a.bbs_subject, a.file_id, a.reg_date, a.upd_date, a.bbs_gubun, a.hakneon
+		 from (
+		select bbs_id, bbs_subject, file_id, reg_date , upd_date , bbs_gubun, hakneon
+			from bbs_info
+			where 1=1
+			<if test="bbs_subject  != null and bbs_subject  != ''">
+				and bbs_subject like '%${bbs_subject }%'
+			</if>
+			<if test="bbs_gubun  != null and bbs_gubun  != ''">
+				and bbs_gubun = #{bbs_gubun}
+			</if>
+			<if test="hakneon  != null and hakneon  != ''">
+				and hakneon = #{hakneon}
+			</if>
+		order by bbs_id desc) a,(SELECT @RNUM := 0) b
+		) inter where rnum > #{firstIndex}
+		and rnum <![CDATA[ <= ]]> #{lastIndex}
+	</select>
+	
+	<select id="getBbsInfoListCnt" parameterType="BbsInfoVo" resultType="int">
+		select count(*) as cnt 
+			from bbs_info
+			where 1=1
+			<if test="bbs_subject  != null and bbs_subject  != ''">
+				and bbs_subject like '%${bbs_subject }%'
+			</if>
+			<if test="bbs_gubun  != null and bbs_gubun  != ''">
+				and bbs_gubun = #{bbs_gubun}
+			</if>
+			<if test="hakneon  != null and hakneon  != ''">
+				and hakneon = #{hakneon}
+			</if>
+	</select>
+    <insert id="insertBbsinfo" parameterType="BbsInfoVo">
+		INSERT INTO bbs_info 
+		(
+			bbs_id,bbs_subject, bbs_cn
+			<if test="file_id  != null and file_id  != ''">
+			,file_id 
+			</if>
+			,reg_date ,upd_date ,bbs_content, bbs_gubun
+			<if test="hakneon  != null and hakneon  != ''">
+			,hakneon 
+			</if>
+		) VALUES 
+		(
+			#{bbs_id},#{bbs_subject},#{bbs_cn}
+			<if test="file_id  != null and file_id  != ''">
+			,#{file_id}
+			</if>
+			,now(),now(),#{bbs_content},#{bbs_gubun}
+			<if test="hakneon  != null and hakneon  != ''">
+			,#{hakneon}
+			</if>
+		)
+	</insert>
+	
+	<update id="updateBbsinfo" parameterType="BbsInfoVo">
+		UPDATE bbs_info SET
+			bbs_subject = #{bbs_subject},
+			bbs_cn = #{bbs_cn},
+			<if test="file_id != null and file_id != ''">
+				file_id = #{file_id},
+			</if>
+			upd_date = now(),
+			bbs_content = #{bbs_content},
+			bbs_gubun = #{bbs_gubun}
+			<if test="hakneon  != null and hakneon  != ''">
+			,hakneon = #{hakneon}
+			</if>
+			<if test="hakneon  == null or hakneon  == ''">
+			,hakneon = null
+			</if>
+		where bbs_id = #{bbs_id}
+	</update>
+	
+	<delete id="deleteBbsinfo" parameterType="BbsInfoVo">
+		delete from bbs_info where bbs_id = #{bbs_id}
+	</delete>
+	
+	
+	<select id="getBbsinfoDetail" parameterType="BbsInfoVo"  resultType="BbsInfoVo">
+		select 
+		a.bbs_id,
+		a.bbs_subject ,
+		a.bbs_cn, 
+		a.file_id,
+		a.reg_date ,
+		a.bbs_content,
+		a.bbs_gubun,
+		a.hakneon
+		 from bbs_info a
+		 where a.bbs_id = #{bbs_id}
+	</select>
+	
+	
+	
+	
+	<select id="getQnaInfoList" parameterType="QnaInfoVo" resultType="QnaInfoVo">
+		select inter.* from (
+		select @RNUM := @RNUM + 1 AS RNUM,
+		a.qna_cd, a.qna_title, a.qna_answer_state, a.stud_id, a.stud_nm, a.hakwon_nm, a.reg_date, a.answer_date
+		 from (
+		select qna_cd, qna_title, qna_answer_state, b.stud_id, b.stud_nm, c.hakwon_nm, reg_date , answer_date 
+			from qna_info a, student b, hakwon c
+			where a.stud_cd = b.stud_cd 
+			and b.hakwon_cd = c.hakwon_cd
+			and del_yn = 'N'
+			<if test="searchKeyword  != null and searchKeyword  != ''">
+				and a.qna_title like '%${searchKeyword }%'
+			</if>
+			<if test="searchKeyword1  != null and searchKeyword1  != ''">
+				and b.stud_nm like '%${searchKeyword1 }%'
+			</if>
+			<if test="hakwon_cd  != null and hakwon_cd  != ''">
+				and b.hakwon_cd = #{hakwon_cd}
+			</if>
+			<if test="search_qna_answer_state  != null and search_qna_answer_state  != ''">
+				and a.qna_answer_state = #{search_qna_answer_state}
+			</if>
+		order by a.reg_date desc) a,(SELECT @RNUM := 0) b
+		) inter where rnum > #{firstIndex}
+		and rnum <![CDATA[ <= ]]> #{lastIndex}
+	</select>
+	
+	<select id="getQnaInfoListCnt" parameterType="QnaInfoVo" resultType="int">
+		select count(*) as cnt 
+			from qna_info a, student b, hakwon c
+			where a.stud_cd = b.stud_cd 
+			and b.hakwon_cd = c.hakwon_cd
+			and del_yn = 'N'
+			<if test="searchKeyword  != null and searchKeyword  != ''">
+				and a.qna_title like '%${searchKeyword }%'
+			</if>
+			<if test="searchKeyword1  != null and searchKeyword1  != ''">
+				and b.stud_nm like '%${searchKeyword1 }%'
+			</if>
+			<if test="hakwon_cd  != null and hakwon_cd  != ''">
+				and b.hakwon_cd = #{hakwon_cd}
+			</if>
+			<if test="search_qna_answer_state  != null and search_qna_answer_state  != ''">
+				and a.qna_answer_state = #{search_qna_answer_state}
+			</if>
+	</select>
+	
+	
+	<update id="updateQnaInfo" parameterType="QnaInfoVo">
+		UPDATE qna_info SET
+			qna_answer = #{qna_answer},
+			qna_answer_state = #{qna_answer_state},
+			answer_date = now()
+		where qna_cd = #{qna_cd}
+	</update>
+	
+	<delete id="deleteanswer" parameterType="AnswerVo">
+		delete from answer 
+		where stud_cd =#{stud_cd} 
+		and weekvalue = #{weekvalue}
+		and dayvalue = #{dayvalue}
+	</delete>
+	
+	
+	<delete id="deleteanswernodayvalue" parameterType="AnswerVo">
+		delete from answer where ifnull(dayvalue,'') = ''
+	</delete>
+	
+</mapper>

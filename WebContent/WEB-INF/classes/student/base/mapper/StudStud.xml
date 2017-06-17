@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="student.stud.ebc.StudStudDAO">
+	<select id="getStudent" parameterType="StudentVo" resultType="StudentVo">
+		SELECT stud_cd, stud_id, stud_nm, hakwon_cd , hakneon
+		FROM student 
+		where hakwon_cd = #{hakwon_cd}
+		and stud_id = #{stud_id}
+		and stud_nm = #{stud_nm}
+		and hakneon = #{hakneon}
+		and use_yn = 'Y'
+    </select>
+    
+    <insert id="insertAnswer" parameterType="AnswerVo">
+		INSERT INTO ANSWER 
+		(
+			STUD_CD,WEEKVALUE,DAYVALUE,
+			QUESTIONVALUE,STUDANSWER,RIGHTYN
+		) VALUES 
+		(
+			#{stud_cd},#{weekvalue},#{dayvalue},
+			#{questionvalue},#{studanswer},#{rightyn}
+		)
+	</insert>
+	
+	
+	<select id="getStudAnswer" parameterType="AnswerVo" resultType="AnswerVo">
+		SELECT stud_cd, weekvalue, dayvalue, questionvalue,studanswer, rightyn 
+		FROM answer 
+		where stud_cd = #{stud_cd}
+		and weekvalue = #{weekval}
+		and dayvalue = #{dayvalue}
+    </select>
+    
+    
+    <select id="getBbsInfoList" parameterType="BbsInfoVo" resultType="BbsInfoVo">
+		select inter.* from (
+		select @RNUM := @RNUM + 1 AS RNUM,
+		a.bbs_id, a.bbs_subject, a.file_id, a.reg_date, a.upd_date
+		 from (
+		select bbs_id, bbs_subject, file_id, reg_date , upd_date 
+			from bbs_info
+			where 1=1
+			<if test="searchKeyword  != null and searchKeyword  != ''">
+				and bbs_subject like '%${searchKeyword }%'
+			</if>
+			<if test="bbs_gubun  != null and bbs_gubun  != ''">
+			    and bbs_gubun = #{bbs_gubun}
+			</if>
+			<if test="hakneon  != null and hakneon  != ''">
+			    and ( hakneon = #{hakneon} or hakneon is null )
+			</if>
+			<if test="hakneon  == null and hakneon  == ''">
+			    and hakneon is null
+			</if>
+		order by reg_date desc) a,(SELECT @RNUM := 0) b
+		) inter where rnum > #{firstIndex}
+		and rnum <![CDATA[ <= ]]> #{lastIndex}
+	</select>
+	
+	<select id="getBbsInfoListCnt" parameterType="BbsInfoVo" resultType="int">
+		select count(*) as cnt 
+			from bbs_info
+			where 1=1
+			<if test="searchKeyword  != null and searchKeyword  != ''">
+				and bbs_subject like '%${searchKeyword }%'
+			</if>
+			<if test="bbs_gubun  != null and bbs_gubun  != ''">
+			    and bbs_gubun = #{bbs_gubun}
+			</if>
+			<if test="hakneon  != null and hakneon  != ''">
+			    and ( hakneon = #{hakneon} or hakneon is null )
+			</if>
+			<if test="hakneon  == null and hakneon  == ''">
+			    and hakneon is null
+			</if>
+	</select>
+	
+	
+	
+	
+	
+	<select id="getQnaInfoList" parameterType="QnaInfoVo" resultType="QnaInfoVo">
+		select inter.* from (
+		select @RNUM := @RNUM + 1 AS RNUM,
+		a.qna_cd, a.qna_title, a.qna_answer_state, a.reg_date, a.answer_date
+		 from (
+		select qna_cd, qna_title, qna_answer_state, reg_date , answer_date 
+			from qna_info
+			where stud_cd = #{stud_cd} 
+			and del_yn = 'N'
+			<if test="searchKeyword  != null and searchKeyword  != ''">
+				and qna_title like '%${searchKeyword }%'
+			</if>
+			<if test="searchKeyword1  != null and searchKeyword1  != ''">
+				and qna_answer_state = #{searchKeyword1}
+			</if>
+		order by reg_date desc) a,(SELECT @RNUM := 0) b
+		) inter where rnum > #{firstIndex}
+		and rnum <![CDATA[ <= ]]> #{lastIndex}
+	</select>
+	
+	<select id="getQnaInfoListCnt" parameterType="QnaInfoVo" resultType="int">
+		select count(*) as cnt 
+			from qna_info
+			where stud_cd = #{stud_cd} 
+			<if test="searchKeyword  != null and searchKeyword  != ''">
+				and qna_title like '%${searchKeyword }%'
+			</if>
+			<if test="searchKeyword1  != null and searchKeyword1  != ''">
+				and qna_answer_state = #{searchKeyword1}
+			</if>
+	</select>
+	
+	
+	<insert id="insertQnaInfo" parameterType="QnaInfoVo">
+		INSERT INTO qna_info 
+		(
+			qna_cd,qna_title,qna_content,
+			qna_answer,qna_answer_state,stud_cd,
+			reg_date, del_yn
+		) VALUES 
+		(
+			#{qna_cd},#{qna_title},#{qna_content},
+			#{qna_answer},#{qna_answer_state},#{stud_cd},
+			now(),'N'
+		)
+	</insert>
+	
+	<update id="updateQnaInfo" parameterType="QnaInfoVo">
+		UPDATE qna_info SET
+			qna_title = #{qna_title},
+			qna_content = #{qna_content},
+			upd_date = now()
+		where qna_cd = #{qna_cd}
+	</update>
+	
+	
+	<delete id="deleteQnaInfo" parameterType="QnaInfoVo">
+		delete from qna_info where qna_cd = #{qna_cd}
+	</delete>
+	
+	<select id="getDetailQnaInfo" parameterType="QnaInfoVo" resultType="QnaInfoVo">
+		select qna_cd,
+			qna_title,
+			qna_content,
+			qna_answer,
+			qna_answer_state,
+			stud_cd,
+			reg_date,
+			answer_date,
+			upd_date
+			from qna_info
+			where qna_cd = #{qna_cd}
+	</select>
+</mapper>

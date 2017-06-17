@@ -1,0 +1,28 @@
+@charset "utf-8";
+
+table { height:100%; }
+
+td{padding:10px;  }
+/* wrap_style */
+#wrap { zoom:1; }
+#container { position:relative; height:500px;background: url(../images/login/login_bg.png) 0 0 repeat-x; }
+#footer { position:relative; margin-top:30px; padding:10px 0; height:20px;}
+
+/* login */
+.top_bg { height:300px;}
+.login_wrap { position:relative; margin:0 auto; width:750px;}
+.login_wrap:after {content:""; clear:both; display:block;}
+
+.login { float:left; padding-top:50px; padding-left:150px; }
+.login fieldset { position:relative; width:300px;background: url(../images/login/login_form.png) 0 0 no-repeat; }
+.login dl { width:250px; }
+.login dd {  position:relative;  font-size:12px; padding-top:4px; width:250px; }
+*:first-child+html .login dd, * html .login dd  { padding-top:3px;  }
+
+input.in_logn { margin:0 2px; padding:2px 3px; width:100px;  height:20px; font-size:12px;  border:1;}
+.login_btnwrap { position:absolute; right:0; top:0; padding:0; width:74px; height:73px;  }
+.btn_login { display:block; width:74px; height:73px; text-indent:-999em; overflow:hidden;  background:none;  border:0 none;  }
+
+
+.copy { margin:0 auto; padding-top:0; text-align:center; font-size:11px; color:#666; font-family: Verdana, Arial }
+

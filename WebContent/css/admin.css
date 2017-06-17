@@ -1,0 +1,149 @@
+@charset "utf-8";
+
+/* common */
+body { font-size: 12px; }
+table { width:100%; }
+.mgt_10 { margin-top: 10px; }
+.left { text-align: left; }
+input[type=button] { margin:0 3px; padding:0; border:0; cursor: pointer; overflow:hidden; vertical-align:middle;}
+.default_btn_wrap { padding:10px; text-align:center; font-size:12px; vertical-align:middle; }
+
+/* bland */
+.kill_bl { display:block; text-indent:100%; height:0px; line-height:600%; overflow:hidden; }
+*:first-child+html .kill_bl { text-indent:0; visibility:hidden;  }
+.visiblehide{visibility:hidden;position:absolute !important;left:0;}
+.displaynone{display:none;}
+
+a:link{color:#2d69bf; text-decoration:underline;}
+a:hover{color:#f55500; text-decoration: underline;}
+
+/* wrap_style */
+#wrap { zoom:1; }
+#header { position:relative; padding:0; height:57px; }
+#container { position:relative; background-color:#f9f9f9; }
+#footer {height:40px; background:#f7f7f7; background: url(../images/admin/bg_footer.gif) 0 0 repeat-x; /*border-top:1px solid #b4b4b4;*/}
+
+/*******************************************/
+/*               header                    */
+/*******************************************/
+
+/* header */
+.header_style {  background: url(../images/admin/bgx_stylea.png) 0 -143px repeat-x; }
+.header_wrap_style { background: url(../images/admin/bgx_stylea.png) 0 -143px repeat-x;  }
+.header_wrap_style h1 { height:57px; background: url(../images/admin/header_style.png) 0 -125px no-repeat; }
+
+/*******************************************/
+/*               left_menu                 */
+/*******************************************/
+
+/* part_area */
+.left_container { position:absolute; left:0; top:-2px; width:218px; background-color:#f9f9f9; border-right:1px solid #9096a3; }
+.part_area h2 { width:218px; height:52px;  }
+.part_style1 { background: url(../images/admin/header_style.png) 0 -198px no-repeat; }
+.part_style2 { background: url(../images/admin/header_style.png) 0 -265px no-repeat; }
+.part_style3 { background: url(../images/admin/header_style.png) 0 -332px no-repeat; }
+
+.user { height:41px; border-top:1px solid #fff; border-bottom:1px solid #cbcbcb; }
+.user_style1 { background-color:#d4e2f5; }
+.user_style2 { background-color:#c1e8e3; }
+.user_style3 { background-color:#d4d4d4; }
+
+.user .user_info { float:left; margin-top:12px; width:150px; text-align:center;  }
+.user .user_info em { font-weight:bold; color:#464646; }
+.user .user_info em a { font-size:13px; font-family:"굴림", gulim;   }
+.user .user_info em a:hover { text-decoration:underline; color:#000; }
+.user .logout { float:left; margin-top:11px; width:51px;}
+.user .logout a { display:block;  width:51px; height:18px; font-size:10px; background: url(../images/admin/common_layout1.png) -235px -102px no-repeat;}
+
+/*******************************************/
+/*           container content             */
+/*******************************************/
+.content_wrap { margin-left:218px; height:auto !important; height:765px; min-height:765px; min-width:850px; background-color:#fff; border-left:1px solid #9096a3;}
+.content { padding:10px 20px 20px; }
+
+/* search_area */
+.search { position:relative; height:41px; background:#f2f2f3; border-top:1px solid #f9f9f9; border-bottom:1px solid #cbcbcb; }
+.search fieldset { padding:7px 15px; font-size:12; text-align:center;}
+.search span { font-size:12px; }
+.search label { padding-left:7px; line-height: 190%; font-weight:bold; background: url(../images/admin/common_layout1.png) -214px -145px no-repeat;}
+*:first-child+html .search label { line-height: 170%; background-position:-214px -146px;}
+* html .search label { line-height: 170%; background-position:-214px -146px; }
+.search dl { margin:10px 0 0 10px; font-size:12px; text-align:left;  }
+
+/* table_default_style */
+.table_list { padding-top:2px; }
+.table_list th { padding:2px 0 2px 0; height:26px; border:1px solid #d0d4d7;} 
+.table_list td { padding:4px 0 2px 0; height:30px; text-align:center; border:1px solid #d0d4d7; border-top:0;} 
+.table_list td.left { padding-left:8px; text-align:left; }
+.table_list td.date { font-family:verdana; font-size:11px; color:#666; }
+
+
+.form_table { padding-top:2px; }
+.form_table table { border-top:2px solid #91a8bd; }
+.form_table th { height:36px; background-color:#f3f3f3; color:#284e85; border:1px solid #d0d4d7;} 
+.form_table td { padding:3px 5px 3px 5px; height:29px; text-align:left; line-height:150%; border:1px solid #d0d4d7; }
+.form_table p { padding:3px 0; }
+
+/* table_design_style */
+td.center { text-align:center; }
+
+.table_list_style5 { background: url(../images/admin/table_style5.png) 0 0 repeat-x;  }
+.table_list_style5 th { padding:2px 0 1px 0; height:37px; line-height:130%; border-bottom:1px solid #a7a6a6;  border-top:0; }
+*:first-child+html .table_list_style5 th, * html .table_list_style5 th { padding:4px 0 2px 0; height:32px; }
+
+.no_topline { border-top:0 !important; }
+.no_bottomline { border-top:0 !important; }
+.topline_style { border-top:1px solid #91a8bd !important; }
+.bottomline_style { border-bottom:1px solid #91a8bd !important; }
+
+.center td { text-align:center; }
+.inline_bl { display: inline-block;zoom:1;*display:inline; vertical-align:middle;}
+
+
+/* pagenum */
+.pagenum {padding:10px 7px;text-align:center;font-size:0;}
+.pagenum a, .pagenum strong {display:inline-block;zoom:1;*display:inline; text-decoration:none; width:26px; height:16px; margin:0 1px; padding:5px 0; vertical-align:top; line-height:normal; font-weight:bold; color:#555; font-size:12px; font-family:verdana; border:1px solid #d8dce4;}
+.pagenum strong { color:#e76823; }
+.pagenum a span { display:block; text-indent:100%; height:0px; line-height:0; overflow:hidden; }
+.pagenum a:hover {text-decoration:none; color:#3873c9; background-color:#efefef !important; line-height:normal; border:1px solid #ccc;}
+.pagenum .pgup {  background: url(../images/student/student_layout.png) -398px -72px no-repeat; }
+.pagenum .pgdn {  background: url(../images/student/student_layout.png) -464px -72px no-repeat; }
+.pagenum .pgup:hover {  background: url(../images/student/student_layout.png) -398px -106px no-repeat; }
+.pagenum .pgdn:hover {  background: url(../images/student/student_layout.png) -464px -106px no-repeat; }
+
+/*******************************************/
+/*             admin common style          */
+/*******************************************/
+.c_bullet { margin-top:15px; padding:1px 0 0 10px; height:21px; background: url(../images/admin/common_layout1.png) -613px -583px no-repeat; }
+
+/* button */
+.admin_search {  width:54px; height:25px; text-indent:100%; overflow:hidden; background: url(../images/admin/common_layout1.png) -278px -229px no-repeat; }
+
+.btn_search, .btn_select, .btn_refresh { vertical-align:middle; }
+.sb_type_s{ vertical-align:middle; }
+.sb_type_s a{ text-decoration:none !important; }
+
+.sb_type_s { display:inline-block;zoom:1;*display:inline; margin:0 2px; padding:0; height:23px; overflow:hidden;  background: url(../images/admin/common_layout1.png) -431px -269px no-repeat;}
+.sb_type_s a { display:block; margin-left:12px; padding:0 10px 0 2px; height:23px; line-height:25px; font-weight:bold; color:#536fe5 !important; background: url(../images/admin/common_layout1.png) right -269px no-repeat;}
+*:first-child+html .sb_type_s a, * html .sb_type_s a { line-height:24px; }
+
+
+/*******************************************/
+/*        Footer                           */
+/*******************************************/
+
+.copy { margin:0 auto; padding:10px 0; width:1069px; height:20px; text-align:center; font-size:11px; color:#666; background:#f7f7f7; border-top:1px solid #b4b4b4; font-family: Verdana, Arial }
+
+/* survey */
+.survey { margin-top:5px; border:1px solid #d0d4d7; border-top:1px solid #999 !important;}
+.survey h3 { padding:0; height:35px; text-align:center; background:#fafafa; border-bottom:1px solid #d5d5d5; }
+.survey ol, .survey li { list-style:decimal inside; font-size:13px;}
+.survey h4 { margin:10px 20px 0; }
+.survey ol { margin:15px 25px; }
+.survey li { padding:0 0 5px; }
+.survey label { display:inline-block;zoom:1;*display:inline; }
+.survey_day { margin:5px 25px 0 0; text-align:right; }
+.survey_day dt, .survey_day dd { display:inline-block;zoom:1;*display:inline; }
+.survey_day dd { padding-left:5px; font-weight:bold; font-family:verdana; color:#4890f7;}
+.survey_day dt { color:#284e85; }
+.survey_btn_wrap { padding:10px; text-align:center; font-size:0; vertical-align:middle; border-top:1px solid #d0d4d7;}
